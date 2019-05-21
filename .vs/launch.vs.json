@@ -1,0 +1,16 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "nodeDbg",
+      "name": "C:\\Users\\spiva\\Programming\\SEParcel",
+      "project": ""
+    },
+    {
+      "type": "nodeDbg",
+      "name": "package.json",
+      "project": "package.json"
+    }
+  ]
+}

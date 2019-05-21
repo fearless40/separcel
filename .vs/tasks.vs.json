@@ -1,0 +1,18 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "Parcel launch",
+      "appliesTo": "/",
+      "type": "launch",
+      "command": "./parcel src/index.html"
+    },
+    {
+      "taskName": "build",
+      "appliesTo": "/",
+      "type": "default",
+      "command": "tsc"
+
+    }
+  ]
+}
