@@ -4,8 +4,9 @@
     "\\src",
     "\\src\\controllers",
     "\\src\\data",
-    "\\src\\layout"
+    "\\src\\database",
+    "\\src\\data\\models"
   ],
-  "SelectedNode": "\\src\\data\\models",
+  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }

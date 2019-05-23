@@ -1,115 +1,63 @@
 import { User } from "../data/models/User";
 import { UserGroup } from "../data/models/UserGroups";
+import { DBID } from "dbid";
+import { DataBaseConnection, DBSendAction } from "./dbmsg";
 
 
-const enum DBConnectionType {
-    Local = "local",
-    Server = "server"
-}
 
-interface DBResult {
-    from: DBConnectionType
-    errors?: [string]
-} 
-
-interface DBSendResult extends DBResult {
-    ok: boolean
-}
-
-interface DBGetResult extends DBResult {
-    values: [any]
-}
-
-const enum DBCompare {
-    Eq = 0,
-    GEq = 1,
-    GT = 2,
-    LEq = 3,
-    LT = 4,
-    NE = 5
-}
-
-interface DBQueryField {
-    field: string
-    value: string
-    comparison: DBCompare
-}
-
-interface DBQueryAll {
-    all: boolean
-}
-
-interface DBQueryBetween {
-    field: string
-    min: string
-    max: string
-}
-
-type DBQuery = DBQueryField | DBQueryAll | DBQueryBetween
-
-interface DBMsgGet {
-    table: string
-    query: {
-        by: DBQuery[]
-        fields?: string[]
-    }
-}
-
-interface DBMsgSend {
-    table: string
-    values: any[]
-}
-
-interface DataBaseConnection {
-    async send(msg: DBMsgSend): Promise<DBSendResult> 
-    async get(msg: DBMsgGet): Promise<DBGetResult>
-}
+export class Database implements DataBaseConnection{
+    private localdb: DataBaseConnection;
+    private serverdb: DataBaseConnection;
+    
 
 
-class UsersFactory {
+    async send(msg: DBMsgSend): Promise<DBSendResult> {
 
-    constructor(private db: DataBaseConnection) {}
+        let localresult: DBSendResult
+        let serverresult: DBSendResult
+        let retval: DBSendResult = {
+            ok: true
+        }
 
-    async getUsers(): Promise<User[]> {
-        const result = await this.db.get(
-            {
-                table: "user",
-                query: {
-                    by: [{all:true}],
-                    fields: ["lastname"]
-                }
+        let errors = new Array<string>();
+
+        try {
+            if (this.localdb) {
+                localresult = await this.localdb.send(msg);
             }
-        });
+        }
+        catch {
+            retval.ok = false;
+            errors.push("LocalDB Error");
+            //todo: publish event that supplies the error value
+        }
+
+        try {
+            if (this.serverdb) {
+                serverresult = await this.serverdb.send(msg);
+            }
+        }
+        catch {
+            retval.ok = false;
+            errors.push("Server Error");
+            //todo: publish event that supplies the error value
+        }
+
+        const dbid = new DBID(localresult.dbid.localID(), serverresult.dbid.serverID());
+
+        retval.dbid = dbid;
+        if (errors.length > 0) {
+            retval.errors = errors;
+        }
+        
+        return retval;
     }
 
-    async createUser(): Promise<User[]> {
-        return [];
+    async get(msg: DBMsgGet): Promise<DBGetResult> {
+        throw new Error("Method not implemented.");
     }
 
-    async updateUser(user: User): Promise<boolean> {
-        return false;
-    }
-
-    async deleteUser(user: User): Promise<boolean> {
-        return false;
-    }
-
-    async getGroups(): Promise<UserGroup[]> {
-        return [];
-    }
-
-    async createGroup(name: string, users: User[]): Promise<UserGroup> {
-        return new UserGroup();
-    }
-
-
-
-}
-
-
-export class Database {
-    private worker: Worker;
-
+    
 
     users = new UsersFactory();
 

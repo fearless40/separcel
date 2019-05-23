@@ -8,9 +8,10 @@ import * as Lt from "./layout/Layout";
 import * as Meta from "./layout/MetaData"
 import * as Paint from "./widgets/Schedule/ColumnPainter"
 import { ColumnPainter } from "./widgets/Schedule/ColumnPainter";
+import { IndexDB } from "./database/dbindexdb";
 
 
-function main() : void {
+async function main() : void {
     let el = document.getElementById("MainContent");
     let table_layout = new LayoutTable(true);
  
@@ -61,6 +62,10 @@ function main() : void {
         let tableeditor = new TableEditor(el, table_layout);
         tableeditor.show();
     }
+
+    const ldb = new IndexDB();
+    const ret = await ldb.open();
+    console.log(ret);
 }
 
 window.onload = () => {
