@@ -1,7 +1,7 @@
 ﻿import { UserGroup } from "./UserGroups";
-import { DBID } from "../../database/dbid";
+import { DBID, DBItem } from "../../database/dbid";
 
-export class User {
+export class User implements DBItem{
     dbid : DBID
 
     private name: string

@@ -2,6 +2,7 @@ import { UserGroup } from "../data/models/UserGroups";
 import { User } from "../data/models/User";
 import { DBSendAction, DataBaseConnection } from "./dbmsg";
 import { DBID } from "./dbid";
+import { DbTables } from "./dbapi";
 
 export interface SmallUser {
     dbid: DBID
@@ -15,7 +16,7 @@ export class UsersFactory {
     async getUsers(): Promise<SmallUser[]> {
         const result = await this.db.get(
             {
-                table: "user",
+                table: DbTables.users,
                 query: {
                     by: [{ all: true }],
                     fields: ["name"]

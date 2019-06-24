@@ -7,6 +7,6 @@
     "\\src\\database",
     "\\src\\data\\models"
   ],
-  "SelectedNode": "\\.gitignore",
+  "SelectedNode": "\\src\\database\\dbmsg.ts",
   "PreviewInSolutionExplorer": false
 }

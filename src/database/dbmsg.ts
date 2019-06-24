@@ -1,4 +1,4 @@
-import { DBID } from "./dbid";
+import { DBID, DBItem } from "./dbid";
 
 export const enum DBConnectionType {
     Local = "local",
@@ -16,7 +16,7 @@ export interface DBSendResult extends DBResult {
 }
 
 export interface DBGetResult extends DBResult {
-    values: [any]
+    values: any[]
 }
 
 export const enum DBCompare {
@@ -53,10 +53,24 @@ export interface DBQueryBetween {
 
 export type DBQuery = DBQueryField | DBQueryAll | DBQueryBetween
 
+export function dbQueryIsAll(item : DBQuery) : item is DBQueryAll {
+    return ((item as DBQueryAll).all !== undefined); 
+}
+
+export function dbQueryIsBetween(item: DBQuery): item is DBQueryBetween {
+    return ((item as DBQueryBetween).min !== undefined);
+}
+
+export function dbQueryIsField(item: DBQuery): item is DBQueryField {
+    return ((item as DBQueryField).value !== undefined);
+}
+
+
+
 export interface DBMsgGet {
     table: string
     query: {
-        by: DBQuery[]
+        by: DBQuery
         fields?: string[]
     }
 }
@@ -64,7 +78,7 @@ export interface DBMsgGet {
 export interface DBMsgSend {
     table: string
     action: DBSendAction
-    values: any[]
+    values: DBItem[]
 }
 
 
