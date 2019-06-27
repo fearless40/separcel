@@ -1,0 +1,8 @@
+.widget-list-item {
+    list-style:none;
+}
+
+.widget-list-item:hover {
+    border:thin;
+    border-color: black;
+}

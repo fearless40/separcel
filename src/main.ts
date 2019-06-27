@@ -8,10 +8,12 @@ import * as Lt from "./layout/Layout";
 import * as Meta from "./layout/MetaData"
 import * as Paint from "./widgets/Schedule/ColumnPainter"
 import { ColumnPainter } from "./widgets/Schedule/ColumnPainter";
-import { IndexDB } from "./database/dbindexdb";
+//import { IndexDB } from "./database/dbindexdb";
+import { ObservableArray } from "./data/ObservableArray";
+import { BasicList, BasicListNodeRenderString } from "./widgets/BasicList/BasicList";
 
 
-async function main() : void {
+async function main() : Promise<void> {
     let el = document.getElementById("MainContent");
     let table_layout = new LayoutTable(true);
  
@@ -60,12 +62,20 @@ async function main() : void {
 
     if (el) {
         let tableeditor = new TableEditor(el, table_layout);
-        tableeditor.show();
+        //tableeditor.show();
     }
 
-    const ldb = new IndexDB();
-    const ret = await ldb.open();
-    console.log(ret);
+  //  const ldb = new IndexDB();
+  //  const ret = await ldb.open();
+
+    let listrootelement = document.getElementById("ListTest");
+    const values = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth"]
+    let listview = new ObservableArray<string>(values);
+    const listwidget = new BasicList<string>(listrootelement, listview, new BasicListNodeRenderString());
+    listwidget.render();
+
+
+    //console.log(ret);
 }
 
 window.onload = () => {

@@ -3,7 +3,13 @@ export interface Listener<Arg> {
     (event: Arg): boolean;
 }
 
-export class EventSimple<Arg> {
+export interface IEventSimple<Arg> {
+    addListener(callback: Listener<Arg>): void 
+    removeListener(callback: Listener<Arg>): void 
+    fire(argument: Arg): void 
+}
+
+export class EventSimple<Arg> implements IEventSimple<Arg>{
     
     private mCallBacks: Set<Listener<Arg>>;
     constructor() {

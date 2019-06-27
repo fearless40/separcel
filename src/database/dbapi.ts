@@ -1,14 +1,9 @@
-import { User } from "../data/models/User";
-import { UserGroup } from "../data/models/UserGroups";
-import { DBID } from "dbid";
-import { DataBaseConnection, DBSendAction } from "./dbmsg";
-
 export const enum DbTables {
     users = "users",
     groups = "groups"
 }
 
-export class Database implements DataBaseConnection{
+/*export class Database implements DataBaseConnection{
     private localdb: DataBaseConnection;
     private serverdb: DataBaseConnection;
     
@@ -68,3 +63,4 @@ export class Database implements DataBaseConnection{
 
 
 }
+*/
