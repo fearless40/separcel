@@ -8,7 +8,7 @@ export interface IBasicListNodeRender<T> {
 export class BasicListNodeRenderString implements IBasicListNodeRender<string> {
     render(item: string): HTMLElement {
         const li = document.createElement("li");
-        li.classList.add(".widget-list-item");
+        li.classList.add("widget-list-item");
         li.textContent = item;
         return li;
     }

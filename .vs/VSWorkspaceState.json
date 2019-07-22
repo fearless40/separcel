@@ -7,8 +7,9 @@
     "\\src\\database",
     "\\src\\data\\models",
     "\\src\\widgets",
+    "\\src\\widgets\\BasicList",
     "\\src\\widgets\\Schedule"
   ],
-  "SelectedNode": "\\src\\widgets\\Schedule\\ScheduleWidget.ts",
+  "SelectedNode": "\\src\\widgets\\BasicList\\ListWidget.css",
   "PreviewInSolutionExplorer": false
 }
