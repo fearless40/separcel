@@ -11,7 +11,7 @@ import { ColumnPainter } from "./widgets/Schedule/ColumnPainter";
 //import { IndexDB } from "./database/dbindexdb";
 import { ObservableArray } from "./data/ObservableArray";
 import { BasicList, BasicListNodeRenderString } from "./widgets/BasicList/BasicList";
-
+import {App, GetApp, AppPositions} from "./app"
 
 async function main() : Promise<void> {
     let el = document.getElementById("MainContent");
@@ -71,13 +71,14 @@ async function main() : Promise<void> {
     let listrootelement = document.getElementById("ListTest");
     const values = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth"]
     let listview = new ObservableArray<string>(values);
-    const listwidget = new BasicList<string>(listrootelement, listview, new BasicListNodeRenderString());
-    listwidget.render();
+    const listwidget = new BasicList<string>(listview, new BasicListNodeRenderString());
+    GetApp().replaceUI(AppPositions.main,listwidget.render());
 
 
     //console.log(ret);
 }
 
 window.onload = () => {
+    App.Run();
     main();
 }

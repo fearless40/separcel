@@ -27,7 +27,7 @@ export class BasicList<T> {
         
     
 
-    constructor(private parent_element: HTMLElement, private list: IObservableList<T>, private node_render: IBasicListNodeRender<T>) {
+    constructor(private list: IObservableList<T>, private node_render: IBasicListNodeRender<T>) {
         //list.events.onChange.addListener()
     }
 
@@ -35,13 +35,8 @@ export class BasicList<T> {
         return this.root_element;
     }
 
-    get parent() {
-        return this.parent_element;
-    }
 
-
-
-    render() {
+    render(): DocumentFragment {
         let doc = new DocumentFragment();
         this.root_element = document.createElement("ul");
         doc.appendChild(this.root_element);
@@ -50,6 +45,6 @@ export class BasicList<T> {
             this.root_element.appendChild(node);
             this.nodes.push(node);
         }
-        this.parent_element.appendChild(doc);
+        return doc;
     }
 }

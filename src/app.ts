@@ -27,3 +27,69 @@ window.onload = () => {
     greeter.start();
 };
 */
+
+
+export const enum AppPositions {
+    header,
+    lbar,
+    main,
+    rbar,
+    footer
+};
+
+export class App {
+    private root: HTMLElement;
+    private header: HTMLElement;
+    private lbar: HTMLElement;
+    private main: HTMLElement;
+    private rbar: HTMLElement;
+    private footer: HTMLElement;
+
+    constructor() {
+        this.root = document.getElementById("appRoot");
+        this.header = document.getElementById("appHeader");
+        this.lbar = document.getElementById("appLeftSidebar");
+        this.main = document.getElementById("appMain");
+        this.rbar = document.getElementById("appRightSidebar");
+        this.footer = document.getElementById("appFooter");
+    }
+
+    private getPosition(position: AppPositions): HTMLElement {
+        switch (position) {
+            case AppPositions.header:
+                return this.header;
+            case AppPositions.main:
+                return this.main;
+            case AppPositions.lbar:
+                return this.lbar;
+            case AppPositions.rbar:
+                return this.rbar;
+            case AppPositions.footer:
+                return this.footer;
+        }
+    }
+
+    addUI(position: AppPositions, element: HTMLElement | DocumentFragment) {
+        const pos = this.getPosition(position);
+        pos.appendChild(element);
+    }
+
+    replaceUI(position: AppPositions, element: HTMLElement | DocumentFragment) {
+        const pos = this.getPosition(position);
+        const range = document.createRange();
+        range.selectNodeContents(pos);
+        range.deleteContents(); 
+        pos.appendChild(element);
+    }
+
+
+    static Run() {
+        const app = new App();
+        window["app"] = app;
+    }
+}
+
+
+export function GetApp() : App {
+    return <App>window["app"];
+}

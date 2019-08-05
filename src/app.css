@@ -1,7 +1,51 @@
 ﻿
+body, div, span, h1, h2, h3, p, a, dl, dt, dd, ol, ul, li,
+table, tobdy, thead, tfoot, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+}   
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+
 body {
     font-family: 'Segoe UI', sans-serif;
     font-size: medium;
 }
 
+#appHeader {
+    grid-area: header;
+}
+
+#appLeftSidebar {
+    grid-area: lsidebar;
+}
+
+#appRightSidebar {
+    grid-area:rsidebar;
+}
+
+#appMain {
+    grid-area:main;
+}
+
+#appFooter {
+    grid-area:footer;
+}
+
+#appRoot {
+    display:grid;
+    grid-template-columns: 10px auto 10%;
+    grid-template-rows: 4em 100% 1em;
+    grid-template-areas: 
+        "header header header"
+        "lsidebar main rsidebar"
+        "footer footer footer";
+}
 
