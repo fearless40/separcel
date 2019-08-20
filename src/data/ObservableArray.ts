@@ -2,12 +2,12 @@ import { IObservableList, IObservableListChangeEvent, IObservableEvents, IObserv
 import { EventSimple } from "../util/EventSimple";
 
 
-export class ObservableArrayIterator<T>  implements IObservableIterator < T > {
+export class ObservableArrayIterator<T>  implements IObservableIterator <number, T> {
     
     constructor(private owner: ObservableArray<T>, private begin: number, private last: number) {}
 
     next(value?: any): IteratorResult<T> {
-        if (this.begin != this.last) {
+        if (this.begin < this.last) {
             let ret = {
                 done: false,
                 value: this.owner.get(this.begin)
@@ -37,8 +37,83 @@ export class ObservableArrayIterator<T>  implements IObservableIterator < T > {
 
 }
 
-export class ObservableArray<T>  implements IObservableList < T > {
-    events: IObservableEvents<T>;
+export class ObservableArray<T>  implements IObservableList<number, T> {
+    private fire_onchange(index: number, value: T) {
+        const me = this;
+        this.events.onChange.fire({
+            owner: me,
+            values: [value],
+            ids: [index]
+        });
+    }
+
+    private fire_onerase(index: number, oldvalue : T) {
+        const me = this;
+        this.events.onErase.fire({
+            owner: me,
+            values: [oldvalue],
+            ids: [index]
+        });
+    }
+
+    private fire_onadd(index: number, value: T) {
+        const me = this;
+        this.events.onAdd.fire({
+            owner: me,
+            values: [value],
+            ids: [index]
+        });
+    }
+
+    push(value: T): number {
+        this.data.push(value);
+        this.fire_onadd(this.data.length - 1, value);
+    }
+
+    pop(): T {
+        const id = this.data.length - 1;
+        const last = this.data.pop();
+        this.fire_onerase(id, last);
+        return last;
+    }
+
+    remove(index: number) {
+        if (index == this.data.length - 1) {
+            this.pop();
+        } else {
+            const oldvalue = this.data[index];
+            const new_value = this.data.slice(0, index - 1);
+            new_value.concat(this.data.slice(index + 1));
+            this.fire_onerase(index, oldvalue);
+            this.data = new_value;
+        }
+    }
+    removeAll(): void {
+        function make_keyarray(data: T[]) {
+            const ret = [];
+            for (const key of data.keys()) {
+                ret.push(key);
+            }
+            return ret;
+        }
+
+        const keys = new Array(this.data.keys());
+        const ret: IObservableListChangeEvent<number, T> = {
+            owner: this,
+            values: this.data,
+            ids: keys
+         };
+
+        this.data = new Array();
+        this.events.onErase(ret);
+    }
+    forEach(callback: import("./IObservableList").IObservableForEachCallBack<number, T>): void {
+        throw new Error("Method not implemented.");
+    }
+    slice(start: number, end: number): IObservableIterator<number, T> {
+        throw new Error("Method not implemented.");
+    }
+    events: IObservableEvents<number, T>;
     private data: T[]
 
     
@@ -46,8 +121,9 @@ export class ObservableArray<T>  implements IObservableList < T > {
     constructor(dataArray: T[]) {
         this.data = dataArray;
         this.events = {
-            onChange: new EventSimple<IObservableListChangeEvent<T>>(),
-            onErase: new EventSimple<IObservableListChangeEvent<T>>()
+            onChange: new EventSimple<IObservableListChangeEvent<number, T>>(),
+            onErase: new EventSimple<IObservableListChangeEvent<number, T>>(),
+            onAdd: new EventSimple<IObservableListChangeEvent<number, T>>()
         };
     }
 
@@ -86,13 +162,13 @@ export class ObservableArray<T>  implements IObservableList < T > {
         return this.data.length;
     }
 
-    begin() {
-        return 0;
+    begin() : ObservableArrayIterator<T> {
+        return new ObservableArrayIterator(this, 0, this.data.length);
     }
 
-    end() {
-        return this.data.length;
-    }
+    //end() : number {
+    //    return new ObservableArrayIterator(this, this.data.length, this.data.length);
+    //}
 
     range(start: number, end: number): ObservableArrayIterator<T> {
         return new ObservableArrayIterator(this,

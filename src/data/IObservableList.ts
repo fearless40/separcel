@@ -1,34 +1,44 @@
 import { EventSimple, IEventSimple } from "../util/EventSimple";
 
 
-export interface IObservableListChangeEvent<T> {
-    owner: IObservableList<T>;
-    ids: number[];
-    values: T[];
+export interface IObservableListChangeEvent<Index,Type> {
+    owner: IObservableList<Index,Type>;
+    ids: Index[];
+    values: Type[];
 }
 
-export interface IObservableIterator<T> extends Iterator<T> {
+export interface IObservableForEachCallBack<Index,Type> {
+    (currentValue : Type, index : Index)
+}
+
+export interface IObservableIterator<Index,Type> extends Iterator<Type> {
 
 }
 
 
-export interface IObservableEvents<T> {
-    onChange: IEventSimple<IObservableListChangeEvent<T>>
-    onErase: IEventSimple<IObservableListChangeEvent<T>>
+export interface IObservableEvents<Index,Type> {
+    onChange: IEventSimple<IObservableListChangeEvent<Index,Type>>
+    onErase: IEventSimple<IObservableListChangeEvent<Index, Type>>
+    onAdd: IEventSimple<IObservableListChangeEvent<Index, Type>>
 }
 
-export interface IObservableList<T> extends Iterable<T> {
-    get(idvalue : number) : T;
+export interface IObservableList<Index, Type> extends Iterable<Type> {
 
-    set(idvalue, value: T): void 
-    set_async(ids: number[], value: T[]): Promise<boolean>
+    push(value: Type): Index
+    pop(): Type;
+    remove(index: Index);
+    removeAll(): void;
 
-    events: IObservableEvents<T>
+    get(idvalue: Index): Type;
+    //get_async(ids: Index[]): Promise<Type[]>;
+
+    set(idvalue : Index, value: Type): void 
+    set_async(ids: Index[], value: Type[]): Promise<boolean>
+
+    events: IObservableEvents<Index,Type>
 
     length() : number
 
-    begin(): number 
-    end(): number
-    range(start: number, end: number): IObservableIterator<T> 
-    
+    forEach(callback : IObservableForEachCallBack<Index, Type>) : void 
+    slice(start: number, end: number): IObservableIterator<Index,Type> 
 }

@@ -6,10 +6,11 @@
     "\\src\\data",
     "\\src\\database",
     "\\src\\data\\models",
-    "\\src\\widgets",
+    "\\src\\util",
     "\\src\\widgets\\BasicList",
+    "\\src\\widgets\\BasicTable",
     "\\src\\widgets\\Schedule"
   ],
-  "SelectedNode": "\\src\\widgets\\BasicList\\BasicList.ts",
+  "SelectedNode": "\\src\\data\\ObservableArray.ts",
   "PreviewInSolutionExplorer": false
 }

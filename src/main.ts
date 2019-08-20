@@ -12,6 +12,7 @@ import { ColumnPainter } from "./widgets/Schedule/ColumnPainter";
 import { ObservableArray } from "./data/ObservableArray";
 import { BasicList, BasicListNodeRenderString } from "./widgets/BasicList/BasicList";
 import {App, GetApp, AppPositions} from "./app"
+import { BasicTable } from "./widgets/BasicTable/BasicTable";
 
 async function main() : Promise<void> {
     let el = document.getElementById("MainContent");
@@ -68,11 +69,22 @@ async function main() : Promise<void> {
   //  const ldb = new IndexDB();
   //  const ret = await ldb.open();
 
-    let listrootelement = document.getElementById("ListTest");
+    /*let listrootelement = document.getElementById("ListTest");
     const values = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth"]
     let listview = new ObservableArray<string>(values);
     const listwidget = new BasicList<string>(listview, new BasicListNodeRenderString());
     GetApp().replaceUI(AppPositions.main,listwidget.render());
+    */
+
+    const value = [];
+
+    for (let i = 0; i < 100; ++i) {
+        value.push({ a: "hello" + i, b: "goodbye" + i, c: "donkey" + i });
+    }
+
+    let view = new ObservableArray(value);
+    const btable = new BasicTable(view, true, ["a", "b", "c"]);
+    GetApp().replaceUI(AppPositions.main, btable.render());
 
 
     //console.log(ret);
