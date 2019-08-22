@@ -1,19 +1,59 @@
-﻿import { IObservableList } from "../../data/IObservableList";
+﻿import { IObservableVector, IObservableEvent, ChangeEventType, ChangeReindexValues, IObervableChangeReindex } from "../../data/IObservableList";
+import { SWAttributes } from "../Schedule/ScheduleWidget";
 
 const enum ColumnType {
     Field,
     Selection
 }
 
-const enum Attibutes {
+const enum Attributes {
     dataid = "data-id"
 }
 
 class Column {
     type : ColumnType
     field: string
+    display: string
 }
 
+
+export class ColumnBuilder {
+
+    private column : Column[]
+
+    selection_column(display?: string) {
+        const value: Column = {
+            type: ColumnType.Selection,
+            field: "",
+            display: display || "Selection"
+        };
+
+        if ( (this.column.length != 0) && (this.column[0].type == ColumnType.Selection)) {
+            return;
+        }
+        else {
+            this.column.unshift(value)
+        }
+    }
+
+    field(fieldname: string, display?: string, sorted?: boolean) {
+        const value: Column = {
+            type: ColumnType.Field,
+            field: "",
+            display: display || fieldname
+        }
+    }
+
+    constructor() {
+        this.column = [];
+    }
+
+    get value() {
+        return this.column;
+    }
+
+
+}
 
 export class BasicTable {
     private root: HTMLElement;
@@ -22,30 +62,123 @@ export class BasicTable {
     private body_table: HTMLElement;
 
     private columns: Array<Column>
-    private data : IObservableList<any>
+    private data : IObservableVector<any>
 
-    constructor(DataList: IObservableList<any>, selection_column : boolean, columns: Array<string>) {
+    selection_get(): number[] {
+        return [];
+    }
+
+    selection_set(ids: number[]): void {
+
+    }
+
+    
+    constructor(DataList: IObservableVector<any>, columns: ColumnBuilder) {
         
-        let start_position = 0;
-       
-        if (selection_column) {
-            this.columns = new Array<Column>(columns.length + 1);
-            this.columns[0] = { type: ColumnType.Selection, field: "Select" };
-            start_position = 1;
-        } else {
-            this.columns = new Array<Column>(columns.length);
-        }
-
-        // Copy the columns into a format that works for the class
-        for (let index = 0; index < columns.length; ++index) {
-            this.columns[start_position + index] = {
-                type: ColumnType.Field,
-                field: columns[index]
-            };
-        }
+        this.columns = columns.value;
 
         this.data = DataList;
+
+        this.data.events.addListener(this.ondatachange);
     }
+
+    private onAdd(ids: number[], values: any[]) {
+        ids.forEach((value, index) => {
+            this.render_row(value, values[index]);
+        })
+    }
+
+    private find_single_element(id: number) {
+        const ids = id.toString();
+        for (let element of this.body_table.children) {
+            if (element.getAttribute(Attributes.dataid) == ids) {
+                return element as HTMLElement;
+            }
+        }
+    }
+
+    private build_element_map() {
+        const mapper = new Map<number, HTMLElement>();
+        for (let element of this.body_table.children) {
+            mapper.set(parseInt(element.getAttribute(Attributes.dataid)), element as HTMLElement);
+        }
+        return mapper;
+    }
+
+    private onModify(ids: number[], values: any[]) {
+        if (ids.length == 1) {
+            let element = this.find_single_element(ids[0]);
+            if (element)
+                this.render_update_row(element as HTMLElement, ids[0], values[0]);
+
+        } else {
+            //Build a map of items and indexs 
+            const mapper = this.build_element_map();
+
+            ids.forEach((value, index) => {
+                if (mapper.has(value)) {
+                    this.render_update_row(mapper.get(value), value, values[index]);
+                }
+            });
+        }
+    }
+
+    private onRemove(ids: number[], values: any[]) {
+        if (ids.length == 1) {
+            let element = this.find_single_element(ids[0]);
+            if (element)
+                this.body_table.removeChild(element);
+
+        } else {
+            //Build a map of items and indexs 
+            const mapper = this.build_element_map();
+
+            ids.forEach((value, index) => {
+                if (mapper.has(value)) {
+                    this.body_table.removeChild(mapper.get(value));
+                }
+            });
+        }
+
+    }
+
+    private onReindex(ids: ChangeReindexValues[]) {
+        if (ids.length == 1) {
+            let element = this.find_single_element(ids[0].oldid);
+            if (element)
+                this.render_update_row(element as HTMLElement, ids[0].newid);
+
+        } else {
+            //Build a map of items and indexs 
+            const mapper = this.build_element_map();
+
+            ids.forEach((value, index) => {
+                if (mapper.has(value.oldid)) {
+                    this.render_update_row(mapper.get(value.oldid), value.newid);
+                }
+            });
+        }
+
+    }
+
+    ondatachange = (event: IObservableEvent<any>): boolean => {
+        switch (event.event) {
+            case ChangeEventType.Add:
+                this.onAdd(event.ids, event.values);
+                return;
+            case ChangeEventType.Modify:
+                this.onModify(event.ids, event.values);
+                return;
+            case ChangeEventType.Remove:
+                this.onRemove(event.ids, event.values);
+                return;
+            case ChangeEventType.Reindex:
+                this.onReindex((event as IObervableChangeReindex<any>).ids);
+                return;
+        }
+        return true;
+    }
+
 
     render(): DocumentFragment {
         let doc = document.createDocumentFragment();
@@ -71,7 +204,7 @@ export class BasicTable {
 
         this.columns.forEach((value: Column) => {
             const col = document.createElement("th");
-            col.innerText = value.field;
+            col.innerText = value.display;
             row.appendChild(col);
         });
 
@@ -81,10 +214,23 @@ export class BasicTable {
     
     private render_body(): void {
 
-        for (let index = this.data.begin(), last = this.data.end(); index < last; ++index) {
-            this.render_row(index, this.data.get(index));
+        for (let item of this.data) {
+            this.render_row(item.id, item.value);
         }
         
+    }
+
+    private render_update_row(element: HTMLElement, index: number, value?: any) {
+        element.setAttribute(Attibutes.dataid, index.toString());
+
+        if (!value) return;
+
+        this.columns.forEach((col, index) => {
+            if (col.type == ColumnType.Selection) { }
+            else {
+                element.children[index].firstChild.textContent = value[col.field];
+            }
+        });
     }
 
     private render_row(index : number, value: any): void {

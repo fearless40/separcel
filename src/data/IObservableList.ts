@@ -7,44 +7,56 @@ export const enum ChangeEventType {
     Reindex
 };
 
-export interface IObservableListChangeEvent<Index,Type> {
-    owner: IObservableList<Index,Type>;
+export interface ChangeReindexValues {
+    newid: number
+    oldid: number
+}
+
+export interface IObervableChangeReindex<Type> {
+    event: ChangeEventType.Reindex
+    owner: IObservableVector<Type>
+    ids: ChangeReindexValues[]
+}
+
+export interface IObservableModifyEvent<Type> {
     event: ChangeEventType
-    ids: Index[];
-    olds?: Index[];
+    owner: IObservableVector<Type>;
+    ids: number[];
     values: Type[];
 }
 
-export interface IObservableForEachCallBack<Index,Type> {
-    (currentValue : Type, index : Index)
+export type IObservableEvent<Type> = IObervableChangeReindex<Type> | IObservableModifyEvent<Type>;
+
+export interface IObservableForEachCallBack<Type> {
+    (value : Type, index : number)
 }
 
-export interface IObservableIndexValue<Index, Type> {
-    id: Index,
+export interface IObservableIterReturn<Type> {
+    id: number,
     value: Type
 }
 
-export interface IObservableIterator<Index, Type> extends Iterator<IObservableIndexValue<Index, Type>> {
+export interface IObservableIterator<Type> extends Iterator<IObservableIterReturn<Type>> {
 
 }
 
-export interface IObservableList<Index, Type> extends Iterable<Type> {
+export interface IObservableVector<Type> extends Iterable<Type> {
 
-    push(value: Type): Index
+    push(value: Type): number
     pop(): Type;
-    remove(index: Index);
+    remove(index: number);
     removeAll(): void;
 
-    get(idvalue: Index): Type;
+    get(idvalue: number): Type;
     //get_async(ids: Index[]): Promise<Type[]>;
 
     //set(idvalue : Index, value: Type): void 
     //set_async(ids: Index[], value: Type[]): Promise<boolean>
 
-    events: IEventSimple<IObservableListChangeEvent<Index, Type>>
+    events: IEventSimple<IObservableEvent<Type>>
 
     length() : number
 
-    forEach(callback : IObservableForEachCallBack<Index, Type>) : void 
+    forEach(callback : IObservableForEachCallBack<Type>) : void 
     //slice(start: number, end: number): IObservableIterator<Index,Type> 
 }
