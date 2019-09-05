@@ -25,7 +25,7 @@ async function main() : Promise<void> {
     let schView = new LimitColumns(schedule_data, 2, schedule_data.maxCountCols() - 1);
 
     let data_row_header = new Lt.Horizontal(true, true);
-    data_row_header .addDataTable(schName);
+    data_row_header.addDataTable(schName);
     data_row_header.addDataTable(slots);
     let row_header = new Meta.MetaItem(data_row_header, Meta.MetaTypes.RowHeader);
     
