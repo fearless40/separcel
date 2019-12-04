@@ -2,14 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\controllers",
     "\\src\\data",
-    "\\src\\database",
+    "\\src\\data\\adapters",
+    "\\src\\data\\local",
     "\\src\\data\\models",
+    "\\src\\layout",
     "\\src\\util",
     "\\src\\widgets",
-    "\\src\\widgets\\BasicTable"
+    "\\src\\widgets\\Schedule"
   ],
-  "SelectedNode": "\\src\\widgets\\BasicTable\\BasicTable.ts",
+  "SelectedNode": "\\src\\main.ts",
   "PreviewInSolutionExplorer": false
 }

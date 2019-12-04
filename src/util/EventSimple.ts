@@ -6,7 +6,7 @@ export interface Listener<Arg> {
 export interface IEventSimple<Arg> {
     addListener(callback: Listener<Arg>): void 
     removeListener(callback: Listener<Arg>): void 
-    fire(argument: Arg): void 
+    //fire(argument: Arg): void 
 }
 
 export class EventSimple<Arg> implements IEventSimple<Arg>{

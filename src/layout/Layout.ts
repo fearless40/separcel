@@ -20,7 +20,7 @@ export class Wrapper implements LayoutItem {
 
         for (let i = 0; i < this.mDataTable.maxCountRows(); ++i) {
             let row = this.mDataTable.getRow(i);
-            ret[i] = row.map<Cell>(function (value: DV.DataItem) : Cell {
+            ret[i] = row.map<Cell>((value: DV.DataItem) : Cell => {
                 return new CellSimple(value);
             });
         }
