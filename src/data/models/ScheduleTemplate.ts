@@ -3,21 +3,17 @@ import { User } from "./User";
 import { TimeSlots } from "./TimeSlot";
 
 
-export class SubScheduleTemplate {
-    id: number
-    display: string
-    timeSlots: TimeSlots;
-}
 
-export class ScheduleTemplate {
+/*export class ScheduleTemplate {
     id: string
     subschedules: Array<SubScheduleTemplate>
     subScheduleViewOrder: Array<number>
 
-}
+}*/
 
 export class SubSchedule {
-    template: SubScheduleTemplate;
+    display: string
+    timeSlots: TimeSlots;
     data: Array<string>
 
     
@@ -40,12 +36,12 @@ export class MetaData {
 }
 
 export class Schedule {
-    template: string
     subschedules: Array<SubSchedule>
-    subscheduleOrder: Array<number>
-    versions: Array<ScheduleVersion>
+    versions: Array<Schedule>
     datastream: ScheduleStream
     meta: MetaData
+
+
 
     /*
      * template
@@ -53,4 +49,4 @@ export class Schedule {
      * datastream
      * metadata
      * /
-}
+};

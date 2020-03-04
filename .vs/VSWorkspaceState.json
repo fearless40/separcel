@@ -11,6 +11,6 @@
     "\\src\\widgets",
     "\\src\\widgets\\Schedule"
   ],
-  "SelectedNode": "\\src\\main.ts",
+  "SelectedNode": "\\src\\data\\models\\ScheduleTemplate.ts",
   "PreviewInSolutionExplorer": false
 }
