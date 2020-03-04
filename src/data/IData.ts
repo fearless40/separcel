@@ -8,11 +8,14 @@ export interface IDataIterableReturn<Index, Value> {
 export interface IDataListR<Index, Value> extends Iterable<IDataIterableReturn<Index, Value>>{
     get(id: Index): Value;
     length() : number;
-    forEach(callback: (index: Index, value: Value) => {});
+    forEach(callback: (value: Value, index: Index) => void);
+    toArray() : Value[]
 }
 
 export interface IDataListRW<Index, Value> extends IDataListR<Index,Value>{
-    set(id: Index, value : Value): void
+    set(id: Index, value: Value): void
+    add(value: Value | Array<Value> | IDataListR<Index, Value>): Index | Array<Index>
+    remove(id: Index): Value
 }
 
 export interface IDataMapR<Index,Value> extends IDataListR<Index, Value> {

@@ -6,7 +6,7 @@ interface IProperty {
 
 interface IProperties {
     //properties? : Map<string, Property>
-    property_set(id: string, value : string | number): IProperty
+    property_set(id: string, value : string | number): void
     property_get(id: string): IProperty
     property_getAll() : Array<IProperty>
 }
@@ -30,11 +30,14 @@ class Properties implements IProperties {
     }
 
 
-    property_set(id: string, value: string | number): IProperty {
+    property_set(id: string, value: string | number): void {
         this.mProperties.set(id, value);
     }
     property_get(id: string): IProperty {
-        
+        if (this.mProperties.has(id)) {
+            return new Property(id, this.mProperties.get(id));
+        }
+        return new Property(id, "");
     }
 
 
