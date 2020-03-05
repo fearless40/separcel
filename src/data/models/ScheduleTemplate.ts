@@ -11,23 +11,6 @@ import { TimeSlots } from "./TimeSlot";
 
 }*/
 
-export class SubSchedule {
-    display: string
-    timeSlots: TimeSlots;
-    data: Array<string>
-
-    
-
-    value(row: number, col: number): string {
-        return "";
-    }
-
-    setValue(row: number, col: number, val: string) {
-
-    }
-
-
-}
 
 export class MetaData {
     dateCreated: Date

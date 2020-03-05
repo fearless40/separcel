@@ -3,12 +3,12 @@ import { Datum } from "../ItemHelpers";
 import { IDataListRW, IDataIterableReturn, IDataListR } from "../IData";
 import { Array_Remove } from "../../util/ArrayHelper";
 
-export class TimeSlotEntry  {
+export class TimeSlotEntry {
     time_start: Date
     time_end: Date
     display: string
     order: number
-    constructor(display: string, order:number, timeStart?: Date, timeEnd?: Date ) {
+    constructor(display: string, order: number, timeStart?: Date, timeEnd?: Date) {
         this.display = display;
         this.order = order;
         if (timeStart && timeEnd) {
@@ -19,13 +19,14 @@ export class TimeSlotEntry  {
             }
         }
     }
+}
 
 
 
-export interface TimeSlotIndex {
+/*export interface TimeSlotIndex {
     start: number
     end: number
-}
+}*/
 
 export class TimeSlots implements IDataListRW<number, TimeSlotEntry> {
 
@@ -105,7 +106,7 @@ export class TimeSlots implements IDataListRW<number, TimeSlotEntry> {
     }
    
 
-    toIndex(time_start : Date, duration : number): TimeSlotIndex {
+    /*toIndex(time_start : Date, duration : number): TimeSlotIndex {
         const start = time_start;
         const end = new Date(time_start)
         end.setMinutes(start.getMinutes() + duration);
@@ -114,6 +115,6 @@ export class TimeSlots implements IDataListRW<number, TimeSlotEntry> {
         const endindex = this.slots.findIndex((element) => (end > element.time_start && end <= element.time_end));
 
         return { start: startindex, end: endindex };
-    }
+    }*/
 
 }

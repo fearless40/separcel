@@ -6,6 +6,7 @@ import { User } from "./User";
 import { ScheduleDefinition, ScheduleDataDefinition } from "./ScheduleDefinition";
 import { ScheduleStream } from "./ScheduleStream";
 import { ScheduleDataSnapShot } from "./ScheduleDataSnapShot";
+import { SubSchedule } from "./SubSchedule";
 
 
 
@@ -22,16 +23,20 @@ export class ScheduleVersion {
 
 
 export class Schedule {
-    id: number
+    id: string
     date_start: Date
     date_end: Date
-    definition: ScheduleDefinition
-    versions: ScheduleVersion[]
+    subSchs: SubSchedule[]
     data: ScheduleStream
-    snapshots: Map<ScheduleDataDefinition, ScheduleDataSnapShot>
 
-    getNbrDays(): number {
-        return 10;
+    get nbrDays() : number {
+        return (this.date_end.getTime() - this.date_start.getTime()) / (1000 * 60 * 60 * 24);
+    }
+
+    /// When a value changes in a SubSch it calls register_change to let the Schedule know the
+    /// value changed
+    register_change(subSch: SubSchedule, index: any, value: string): void {
+
     }
 }
 

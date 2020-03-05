@@ -48,32 +48,29 @@ export interface IDataArrayRW<Value> extends IDataArrayR<Value> {
 }
 
 
-export interface IDataTablePosition<Index> {
+export interface IDataTablePosition {
     row: number
     col: number
-    id?: Index;
 }
 
-export type IDataTableIndex<Index> = IDataTablePosition<Index> | Index;
+export type IDataTableIndex<Index> = IDataTablePosition | Index;
 
 export interface IDataTableR<Index, Value> extends IDataListR<IDataTableIndex<Index> ,Value> {
-    rowCount(): number
-    colCount(): number
+    row_length(): number
+    col_length(): number
 
-    getRow(row : number): IDataArrayR<Value>;
-    getCol(col: number): IDataArrayR<Value>;
+    row_get(row : number): Array<Value>;
+    col_get(col: number): Array<Value>;
+
+    get(row: number, col: number): Value;
+    get(id: Index): Value;
 }
 
 export interface IDataTableRW<Index, Value> extends IDataTableR<Index, Value> {
-    rowCount(): number
-    colCount(): number
+    row_set(row: number, data: Array<Value> ): void
+    col_set(col: number, data: Array<Value> ): void
 
-    getRow(row: number): IDataArrayR<Value>;
-    getCol(col: number): IDataArrayR<Value>;
-
-    setRow(row: number, data: IDataArrayR<Value> | Array<Value>): void
-    setCol(col: number, data: IDataArrayR<Value> | Array<Value>): void
-
+    set(row: number, col: number, data: Value): void;
     set(index: IDataTableIndex<Index>, data : Value) : void
 }
 
