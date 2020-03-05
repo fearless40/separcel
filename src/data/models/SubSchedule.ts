@@ -87,13 +87,13 @@ export class SubSchedule implements IDataTableRW<number, string> {
         }
     }
     length(): number {
-        throw new Error("Method not implemented.");
+        return this.data.data.length;
     }
     forEach(callback: (value: string, index: import("../IData").IDataTableIndex<number>) => void) {
         throw new Error("Method not implemented.");
     }
     toArray(): string[] {
-        throw new Error("Method not implemented.");
+        return this.data.data;
     }
     [Symbol.iterator](): Iterator<import("../IData").IDataIterableReturn<import("../IData").IDataTableIndex<number>, string>, any, undefined> {
         throw new Error("Method not implemented.");

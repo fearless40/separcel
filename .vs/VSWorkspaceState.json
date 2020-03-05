@@ -3,14 +3,13 @@
     "",
     "\\src",
     "\\src\\data",
+    "\\src\\database",
     "\\src\\data\\adapters",
     "\\src\\data\\local",
     "\\src\\data\\models",
-    "\\src\\layout",
     "\\src\\util",
-    "\\src\\widgets",
     "\\src\\widgets\\Schedule"
   ],
-  "SelectedNode": "\\src\\data\\models\\TimeSlot.ts",
+  "SelectedNode": "\\src\\data\\models\\Schedule.ts",
   "PreviewInSolutionExplorer": false
 }

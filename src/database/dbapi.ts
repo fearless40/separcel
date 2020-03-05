@@ -3,6 +3,10 @@ export const enum DbTables {
     groups = "groups"
 }
 
+export interface DbItem {
+    server_id : string
+}
+
 /*export class Database implements DataBaseConnection{
     private localdb: DataBaseConnection;
     private serverdb: DataBaseConnection;

@@ -39,3 +39,11 @@ export class MonthHelper {
 export function IsWeekend(d: Date): boolean {
     return (this.day_get(d).toLocaleDateString("en", { weekday: "narrow" }) == "S" )
 }
+
+export function DateDiffDays(start: Date, end: Date) : number {
+    return MillisecondsToDays(end.getTime() - start.getTime()) ;
+}
+
+export function MillisecondsToDays(milli: number): number {
+    return milli / (1000 * 60 * 60 * 24);
+}

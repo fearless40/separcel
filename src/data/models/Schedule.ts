@@ -7,8 +7,14 @@ import { ScheduleDefinition, ScheduleDataDefinition } from "./ScheduleDefinition
 import { ScheduleStream } from "./ScheduleStream";
 import { ScheduleDataSnapShot } from "./ScheduleDataSnapShot";
 import { SubSchedule } from "./SubSchedule";
+import { DbItem } from "../../database/dbapi";
+import { DateDiffDays } from "../../util/DateHelper";
 
-
+// Possible Table Format for a schedule
+// Versions -> ScheduleVersion
+// Schedule -> Everything but ScheduleVersion 
+// SubSch -> Holds the subschedules for all the schedules
+// SchStream -> Holds the stream changes for all the schedules
 
 
 export class ScheduleVersion {
@@ -22,21 +28,52 @@ export class ScheduleVersion {
 }
 
 
-export class Schedule {
+export class Schedule implements DbItem {
     id: string
+    server_id: string
+    isSavetoDB: boolean
+    schedulegroup: string
     date_start: Date
     date_end: Date
     subSchs: SubSchedule[]
-    data: ScheduleStream
+    //data: ScheduleStream
+
+    //constructor(month: number, year: number, template : any);
+    //constructor(startdate: Date, enddate: Date, template : any);
+    //constructor()
+
+
 
     get nbrDays() : number {
-        return (this.date_end.getTime() - this.date_start.getTime()) / (1000 * 60 * 60 * 24);
+        return DateDiffDays(this.date_start, this.date_end);
     }
 
     /// When a value changes in a SubSch it calls register_change to let the Schedule know the
     /// value changed
     register_change(subSch: SubSchedule, index: any, value: string): void {
+        /// If the scheduled is saved to the db then will issues an update command to the database
+    }
 
+    load(criteria: any) {
+        /// Loads from the database
+    }
+
+    save() {
+        /// Saves the schedule and version to the database. 
+        /// Only needed to be called on creation / import. 
+        /// assigns server_id at that time
+    }
+
+    import(data: any) {
+        /// imports from json need to call save
+    }
+
+    versions(): ScheduleVersion[] {
+        return []
+    }
+
+    version_create(): Schedule {
+        return;
     }
 }
 
