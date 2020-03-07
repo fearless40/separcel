@@ -18,9 +18,9 @@ export class ScheduleStream {
     schedule: Schedule
     data: Array<ScheduleStreamEntry>
 
-    buildSnapShots(version: ScheduleVersion): Array<ScheduleDataSnapShot> {
-        return [];
-    }
+   // buildSnapShots(version: ScheduleVersion): Array<ScheduleDataSnapShot> {
+   ///     return [];
+   // }
 
     getSchedule(): Schedule {
         return this.schedule;

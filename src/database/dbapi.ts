@@ -1,10 +1,46 @@
-export const enum DbTables {
-    users = "users",
-    groups = "groups"
+export class DBID {
+    constructor(
+        readonly localid: any = -1,
+        readonly serverid: any = -1
+    ) { }
+
+    /*    localID(): number {
+            return this.localid;
+        }
+    
+        serverID(): number {
+            return this.serverid;
+        }
+    */
+    isSavedLocal(): boolean {
+        return (this.localid != -1);
+    }
+
+    isSavedServer(): boolean {
+        return (this.serverid != -1);
+    }
+
 }
 
-export interface DbItem {
-    server_id : string
+
+export interface DBItem {
+    dbid: DBID
+}
+
+export interface Transaction {
+    create(value: any): void
+    update(id: DBID, value: any): void
+    remove(id: DBID): void
+}
+
+export interface Database {
+    open(criteria: any): Promise<boolean>
+    close(): void
+
+    createTransaction(): Transaction
+    commitTransaction(trans: Transaction)
+
+    query(criteria : any) : []
 }
 
 /*export class Database implements DataBaseConnection{
@@ -62,9 +98,5 @@ export interface DbItem {
     
 
     users = new UsersFactory();
-
-
-
-
 }
 */

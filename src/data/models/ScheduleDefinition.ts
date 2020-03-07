@@ -18,6 +18,6 @@ export class ScheduleDefinition {
     groups_readonly: UserGroup[]
     groups_edit: UserGroup[]
     created_date: Date
-    data_sources: Array<ScheduleDataDefinition>
+    //data_sources: Array<ScheduleDataDefinition>
     data_layout: any
 }
