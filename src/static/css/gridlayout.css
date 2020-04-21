@@ -1,0 +1,22 @@
+﻿
+.layout-grid-container-2x1x1 {
+    display: grid;
+    grid-template-columns: 50%, 50%;
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "left righttop"
+        "left rightbottom";
+}
+
+.layout-grid-left {
+    grid-area: left;
+}
+
+.layout-grid-righttop {
+    grid-area: righttop;
+}
+
+.layout-grid-rightbottom {
+    grid-area: rightbottom;
+}
+

@@ -2,14 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\data",
-    "\\src\\database",
-    "\\src\\data\\adapters",
-    "\\src\\data\\local",
-    "\\src\\data\\models",
-    "\\src\\util",
+    "\\src\\controllers",
+    "\\src\\page",
+    "\\src\\page\\splitview",
+    "\\src\\widgets\\BasicList",
+    "\\src\\widgets\\BasicTable",
+    "\\src\\widgets\\Button",
     "\\src\\widgets\\Schedule"
   ],
-  "SelectedNode": "\\src\\data\\models\\Schedule.ts",
+  "SelectedNode": "\\src\\page\\splitview\\splitview.html",
   "PreviewInSolutionExplorer": false
 }
