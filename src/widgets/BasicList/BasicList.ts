@@ -38,9 +38,12 @@ export class BasicList<T> implements Widget {
     
     private create(data: Array<T>) {
         this.root_element = document.createElement("ul");
-        this.nodes = data.map((value: T) => {
-            return this.node_render.render(value);
+        this.nodes = data.map((value: T, index) => {
+            const item = this.node_render.render(value);
+            item.setAttribute("data-index", index.toString());
+            return item;
         });
+        this.nodes.forEach((value) => this.root_element.appendChild(value));
     }
 
     children() : HTMLElement[] {
@@ -59,12 +62,7 @@ export class BasicList<T> implements Widget {
     }
 
 
-    render(): DocumentFragment {
-        let doc = new DocumentFragment();
-        doc.appendChild(this.root_element);
-        for (let item of this.nodes) {
-            this.root_element.appendChild(item);
-        }
-        return doc;
+    render(): HTMLElement {
+        return this.root_element;
     }
 }

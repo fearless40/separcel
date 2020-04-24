@@ -1,0 +1,11 @@
+.widget-list-item {
+    list-style:none;
+}
+
+.widget-list-item-selected {
+    background-color: darkcyan;
+}
+
+.widget-list-item-selected::before {
+    content: ">";
+}

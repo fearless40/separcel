@@ -1,0 +1,85 @@
+﻿
+body, div, span, h1, h2, h3, p, a, dl, dt, dd, ol, ul, li,
+table, tobdy, thead, tfoot, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    box-sizing: border-box;
+}   
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: medium;
+}
+
+ul {
+    border: 1px solid grey;
+    overflow:auto;
+    height: 100%;
+    display:flex;
+    flex-direction:column;
+}
+
+li {
+    flex:1;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: .5em;
+    margin-bottom: 2px;
+    margin-top:2px;
+    margin-left: 1em;
+    margin-right: 1em;
+    background-clip: content-box;
+}
+
+ul > li + li {
+    border-top: 1px solid grey;
+    border-radius: 0;
+}
+
+li:hover {
+    transition: 1s;
+    background-color:cadetblue;
+    background-clip:padding-box;
+    border-radius: 0.25em;
+}
+
+#appHeader {
+    grid-area: header;
+}
+
+#appLeftSidebar {
+    grid-area: lsidebar;
+}
+
+#appRightSidebar {
+    grid-area:rsidebar;
+}
+
+#appMain {
+    grid-area:main;
+    overflow:auto;
+}
+
+#appFooter {
+    grid-area:footer;
+}
+
+#appRoot {
+    display:grid;
+    grid-template-columns: 10px auto 10%;
+    grid-template-rows: 4em 85vh 1fr;
+    grid-template-areas: 
+        "header header header"
+        "lsidebar main rsidebar"
+        "footer footer footer";
+}
+

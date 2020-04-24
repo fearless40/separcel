@@ -13,6 +13,8 @@ import { ObservableArray } from "./data/ObservableArray";
 import { BasicList, BasicListNodeRenderString } from "./widgets/BasicList/BasicList";
 import {App, GetApp, AppPositions} from "./app"
 import { BasicTable } from "./widgets/BasicTable/BasicTable";
+import { Grid2x2x1Render } from "./widgets/Layout/grid2x2x1";
+import { Behaviors } from "./behaviors/onSelection";
 
 async function main() : Promise<void> {
     let el = document.getElementById("MainContent");
@@ -79,15 +81,53 @@ async function main() : Promise<void> {
     const value = [];
 
     for (let i = 0; i < 100; ++i) {
-        value.push({ a: "hello" + i, b: "goodbye" + i, c: "donkey" + i });
+        value.push( /*{ a: "hello" + i, b: "goodbye" + i, c: "donkey" + i }*/ "hello" + i);
     }
 
-    let view = new ObservableArray(value);
+    /*let view = new ObservableArray(value);
     const btable = new BasicTable(view, true, ["a", "b", "c"]);
     GetApp().replaceUI(AppPositions.main, btable.render());
 
 
     //console.log(ret);
+    */
+    
+    const Details = new Grid2x2x1Render();
+    const List = new BasicList(value, new BasicListNodeRenderString());
+    const text1 = document.createElement("span");
+    const text2 = document.createElement("span");
+
+    text1.textContent = "Top"; text2.textContent = "Bottom";
+
+    /*List.root.addEventListener("click", (ev) => {
+        text1.textContent = "1";
+        text2.textContent = "2";//value[parseInt(index)];
+        const target = <HTMLElement>ev.target;
+        target.classList.toggle("widget-list-item-selected");
+    });*/
+
+    /*Behaviors.onSelection(List, (index, element, widget) => {
+        if (index === "") return;
+        text1.textContent = index;
+        text2.textContent = value[parseInt(index)];
+        widget.root.querySelectorAll(".widget-list-item-selected").forEach((value) => value.classList.remove("widget-list-item-selected"));
+        element.classList.toggle("widget-list-item-selected");
+    });*/
+
+    Behaviors.onSelection(List, Behaviors.singleItemSelectionCSS("widget-list-item-selected", (index) => {
+        text1.textContent = index;
+        text2.textContent = value[parseInt(index)];
+    })    );
+
+    const docfrag = Details.place({
+        root: document.createElement("div"),
+        left: List,
+        rightTop: text1,
+        rightBottom: text2
+    }, false);
+
+    GetApp().replaceUI(AppPositions.main, docfrag);
+
 }
 
 window.onload = () => {
