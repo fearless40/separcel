@@ -15,6 +15,7 @@ import {App, GetApp, AppPositions} from "./app"
 import { BasicTable } from "./widgets/BasicTable/BasicTable";
 import { Grid2x2x1Render } from "./widgets/Layout/grid2x2x1";
 import { Behaviors } from "./behaviors/onSelection";
+import {TabWidget} from "./widgets/Tab/Tab"
 
 async function main() : Promise<void> {
     let el = document.getElementById("MainContent");
@@ -96,6 +97,7 @@ async function main() : Promise<void> {
     const List = new BasicList(value, new BasicListNodeRenderString());
     const text1 = document.createElement("span");
     const text2 = document.createElement("span");
+    const tabcontl = new TabWidget();
 
     text1.textContent = "Top"; text2.textContent = "Bottom";
 
@@ -122,7 +124,7 @@ async function main() : Promise<void> {
     const docfrag = Details.place({
         root: document.createElement("div"),
         left: List,
-        rightTop: text1,
+        rightTop: tabcontl,
         rightBottom: text2
     }, false);
 
