@@ -98,6 +98,12 @@ async function main() : Promise<void> {
     const text1 = document.createElement("span");
     const text2 = document.createElement("span");
     const tabcontl = new TabWidget();
+    tabcontl.addTab("Details", new BasicList(value.slice(5, 10), new BasicListNodeRenderString()));
+    tabcontl.addTab("Versions", () => {
+        const element = document.createElement("div");
+        element.innerHTML = "<div>Hello How are You</div><div>I am <b>I</b> am fine. </div>)";
+        return element;
+    });
 
     text1.textContent = "Top"; text2.textContent = "Bottom";
 

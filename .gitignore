@@ -3,3 +3,5 @@
 .map
 /src/.cache
 /src/dist
+/.cache
+/dist
